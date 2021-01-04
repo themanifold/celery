@@ -100,6 +100,10 @@ class EventReceiver(ConsumerMixin):
                            now=time.time, tzfields=_TZGETTER,
                            adjust_timestamp=adjust_timestamp,
                            CLIENT_CLOCK_SKEW=CLIENT_CLOCK_SKEW):
+        
+        if body.get("utcoffset") != 0 or body.get("utcoffset") is None:
+            localize = False
+            
         type = body['type']
         if type == 'task-sent':
             # clients never sync so cannot use their clock value
